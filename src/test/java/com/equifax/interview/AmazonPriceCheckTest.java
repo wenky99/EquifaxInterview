@@ -1,6 +1,7 @@
 package com.equifax.interview;
 
 import org.openqa.selenium.WebDriver;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import com.equifax.driver.BrowserDriver;
@@ -19,24 +20,33 @@ public class AmazonPriceCheckTest {
 
 	@Test
 	public void checkoutAmazonItem() {
-		WebDriver driver = BrowserDriver.getDriver(browser);
-		driver.navigate().to(url);  
-		System.out.println(driver.getTitle());
-		
-		AmazonHomePage homePage = new AmazonHomePage();
-		homePage.searchForGivenItem(driver, productNameToSearch);
-		
-		AmazonSearchResultsPage searchResultsPage = new AmazonSearchResultsPage();
-		priceOfTheItem = searchResultsPage.getSelectedItemsPrice(driver, selectItemNoInTheList);
-		searchResultsPage.clickSelectedItem(driver, selectItemNoInTheList);
-		
-		AmazonSelectedProductPage productPage = new AmazonSelectedProductPage();
-		productPage.priceMatch(driver, priceOfTheItem);
-		productPage.addToCart(driver);
-		
-		AmazonCartPage cartPage = new AmazonCartPage();
-		cartPage.subTotalPriceCheck(driver, priceOfTheItem);
-		cartPage.proceedToCheckout(driver);
+		WebDriver driver = null;
+		try {
+			driver = BrowserDriver.getDriver(browser);
+			driver.navigate().to(url);
+			System.out.println(driver.getTitle());
+
+			AmazonHomePage homePage = new AmazonHomePage();
+			homePage.searchForGivenItem(driver, productNameToSearch);
+
+			AmazonSearchResultsPage searchResultsPage = new AmazonSearchResultsPage();
+			priceOfTheItem = searchResultsPage.getSelectedItemsPrice(driver, selectItemNoInTheList);
+			searchResultsPage.clickSelectedItem(driver, selectItemNoInTheList);
+
+			AmazonSelectedProductPage productPage = new AmazonSelectedProductPage();
+			productPage.priceMatch(driver, priceOfTheItem);
+			productPage.addToCart(driver);
+
+			AmazonCartPage cartPage = new AmazonCartPage();
+			cartPage.subTotalPriceCheck(driver, priceOfTheItem);
+
+			BrowserDriver.closeCurrentBrowserWindow(driver);
+			cartPage.proceedToCheckout(driver);
+			driver.close();
+		} catch (Exception e) {
+			BrowserDriver.closeCurrentBrowserWindow(driver);
+			Reporter.log("Getting exception at checkoutAmazonItem test");
+		}
 	}
 
 }
