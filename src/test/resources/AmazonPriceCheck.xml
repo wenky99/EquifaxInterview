@@ -6,7 +6,7 @@
 		<classes>
 			<class
 				name="com.equifax.interview.AmazonPriceCheckTest" />
-		</classes>
+		</classes> 
 	
 	</test>
 </suite>
