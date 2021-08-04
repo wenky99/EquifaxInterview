@@ -34,7 +34,6 @@ public class AmazonPriceCheckTest {
 		productPage.priceMatch(driver, priceOfTheItem);
 		productPage.addToCart(driver);
 		
-		
 		AmazonCartPage cartPage = new AmazonCartPage();
 		cartPage.subTotalPriceCheck(driver, priceOfTheItem);
 		cartPage.proceedToCheckout(driver);
