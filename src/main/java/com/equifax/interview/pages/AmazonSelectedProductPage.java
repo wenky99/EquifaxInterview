@@ -1,7 +1,10 @@
 package com.equifax.interview.pages;
 
 import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+import org.testng.Reporter;
 
 public class AmazonSelectedProductPage {
 
@@ -11,25 +14,22 @@ public class AmazonSelectedProductPage {
 	//By cartIcon = By.xpath("//*[@id='nav-cart-count-container']/span[1]");
 	By cartIcon = By.xpath("//*[@id='nav-cart']");
 
-	public boolean priceMatch(WebDriver driver, String expectedPrice) {
+	public void priceMatch(WebDriver driver, String expectedPrice) {
 		try {
 			String actualPrice = driver.findElement(selectedProductPrice).getText();
-			if (!actualPrice.equals(expectedPrice)) {
-				System.out.println("Actual Price= " + actualPrice + " is not same as Expected price =" + expectedPrice);
-			}
-			return true;
+			Assert.assertEquals(actualPrice, expectedPrice," Price in Amazon product page="+actualPrice+" and price in Amazon search results page="+expectedPrice+" is not same");
+			
 		} catch (Exception e) {
-			return false;
+			Reporter.log("Exception at priceMatch");
 		}
 	}
 
-	public boolean addToCart(WebDriver driver) {
+	public void addToCart(WebDriver driver) {
 		try {
 			driver.findElement(addToCart).click();
-			System.out.println("Item added to cart succesfully");
-			return true;
+			Reporter.log("Element add to cart is clicked");
 		} catch (Exception e) {
-			return false;
+			Reporter.log("Exception at addToCart");
 		}
 	}
 }
